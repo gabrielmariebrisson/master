@@ -1,0 +1,587 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Université de Bordeaux,  Master Mention Informatique\n",
+    "\n",
+    "## Intelligence Artificielle\n",
+    "\n",
+    "### Deep Learning, feuille 1"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Présentation\n",
+    "\n",
+    "Le but de ce premier TD est de vous familiariser avec les réseaux de neurones et leur entraînement. Nous allons passer en revue les éléments de base suivant :\n",
+    "\n",
+    " - données d'apprentissage, \n",
+    " \n",
+    " - fonction de perte (loss function)\n",
+    " \n",
+    " - descente de gradient\n",
+    " \n",
+    " Pour cela, nous allons utiliser un réseau de neurone (composé d'un seul neurone en fait) pour deux tâches : \n",
+    " \n",
+    "  - une régression linéaire simple\n",
+    "  \n",
+    "  - une régression logistique."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Commençons par importer quelques unes des bibliothèques usuelles :"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 55,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import numpy as np\n",
+    "import random as rd\n",
+    "import matplotlib.pyplot as plt\n",
+    "%matplotlib inline\n",
+    "\n",
+    "import warnings\n",
+    "warnings.simplefilter('ignore')"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### On génère les données \n",
+    "\n",
+    "Afin de réaliser une régression linéaire simple, nous allongs générer un nuage de points. Exécutez le code de la cellule suivante :"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 56,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<matplotlib.collections.PathCollection at 0x7ff0736bc0d0>"
+      ]
+     },
+     "execution_count": 56,
+     "metadata": {},
+     "output_type": "execute_result"
+    },
+    {
+     "data": {
+      "image/png": "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\n",
+      "text/plain": [
+       "<Figure size 432x288 with 1 Axes>"
+      ]
+     },
+     "metadata": {
+      "needs_background": "light"
+     },
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "#Data: \n",
+    "def generate(m, sizeNoise, slope, intersect):    \n",
+    "    x = [rd.random()*50 + 5 for i in range(m)]\n",
+    "    noise = [rd.random() * sizeNoise for i in range(m)]#np.rand(m,1) * sizeNoise\n",
+    "    y = [intersect + slope*x[i] + noise[i] for i in range(m)] \n",
+    "    return np.array([x]), np.array([y])\n",
+    "\n",
+    "m = 100\n",
+    "sizeNoise = 10\n",
+    "a = 0.8\n",
+    "b =  20\n",
+    "    \n",
+    "X, Y = generate(m, sizeNoise, a, b)\n",
+    "plt.grid()\n",
+    "plt.scatter(X, Y)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Exercice 1. Un neurone :\n",
+    "\n",
+    "Comme vu en cours, un neurone formel est représenté comme suit : \n",
+    "\n",
+    "![Un neurone formel (Mc Culloch & Pitts (1943))](img/formal_neuron_s.png)\n",
+    "\n",
+    "1. Nommez chacun des élements du neurone.\n",
+    "\n",
+    "2. Ecrivez une fonction <code>neuron(x, w, b, f)</code> permettant d'implémenter ce neurone"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "3. Définissez deux fonctions <code>id</code> et <code>sigmoid</code> définies par :\n",
+    "$$\n",
+    "id(z) = z \\mbox{ et } sigmoid(z) = \\frac{1}{1+ e^{-z}}.\n",
+    "$$"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 58,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "4. Testez vos fonctions. L'exécution de la cellule suivante devrait donner le résultat affiché."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 59,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "x:  [[1 2 3]]\n",
+      "y_hat:  [2 3 4]\n"
+     ]
+    }
+   ],
+   "source": [
+    "x = np.array([[1, 2, 3]])\n",
+    "y = np.array([1, 0, 1])\n",
+    "\n",
+    "w = np.array([1])\n",
+    "b = [1]\n",
+    "y_hat = neuron(x, w, b, id)\n",
+    "print('x: ', x)\n",
+    "print('y_hat: ', y_hat)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Exercice 2. Régression linéaire : \n",
+    "\n",
+    "Dans cet exercice, nous allons entraîner un neurone pour réaliser une régression linéaire simple. \n",
+    "\n",
+    "1. Dessiner le neurone qui sera utilisé. Identifiez bien les paramètres à trouver."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Il suffit de prendre $p=1$ et $f=id$ dans le neurone formel de la figure ci-dessus. \n",
+    "\n",
+    "Les paramètres à trouver sont $w$ et $b$. Ils correspondent respectivement à $\\beta_1$ et $\\beta_0$ dans l'expression de la régression linéaire simple (voir votre cours de ACID). "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "1. Ecrivez le code de la fonction <code>loss(y, y_hat)</code> définie comme la moyenne des carrés des écarts : \n",
+    "\n",
+    "$$\n",
+    "loss\\left(y, \\hat{y}\\right) = \\frac 1 {n} \\sum_{i=1}^n \\left(\\hat{y_i} - y_i)\\right)^2. \n",
+    "$$"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "2. Calculez le gradient de la fonction ${\\cal L} = loss$ par rapport aux deux variables $w$ et $b$."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "3. Ecrivez la focntion <code>gradient(x, y_hat, y)</code> retournant le gradient de la fonction $\\cal L$."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 61,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "4. Ecrivez une fonction <code>train(x, y, nu, epochs)</code> qui réalise une déscente du gradient de la fonction $\\cal L$ afin de trouver les paramètres $w$ et $b$ minimisant la valeur de $\\cal L$. "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 62,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "5. Entraînez votre neurone. Prenez $0.001$ comme valeur pour le pas d'apprentissage, et 10000 pour le nombre d'epochs."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "6. Donnez l'équation de la droite de régression obtenue. Ecrivez l'instruction permettant de calculer les valeurs prédites."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 64,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "7. Dessinez la droite de régression sur la même figure que le nuage de point."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "8. Comparez le résultat obtenu avec la droite donnée par <code>linregress</code> du sous module <code>stats</code> du module <code>scipy</code>."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Exercice 3. Régression logistique :\n",
+    "\n",
+    "Dans cet exercice, nous allons transformer le neurone afin de l'utiliser pour réaliser une classification. Nous allons nous limiter à une classification bianire : les élements appartiennent soit à une classe 0 soit à une classe 1.  "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "1. Comment devons-nous appeler la \"fonction\" <code>neuron</code> pour que le fonction d'activation soit la sigmoid ?"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 68,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "x:  [[1 2 3]]\n",
+      "y_hat:  [0.88079708 0.95257413 0.98201379]\n"
+     ]
+    }
+   ],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "2. Exécutez la cellule suivante pour générer les données, les découper en deux parties train et test, etc. Observez le résultat de la cellule."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 69,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "(750, 1)\n",
+      "(750,)\n",
+      "[0 1]\n"
+     ]
+    }
+   ],
+   "source": [
+    "from sklearn.datasets import make_classification\n",
+    "from sklearn.model_selection import train_test_split\n",
+    "\n",
+    "X, y = make_classification(n_samples=1000, n_features=1, n_classes=2, \n",
+    "                           n_informative=1, n_redundant=0, n_repeated=0,\n",
+    "                          n_clusters_per_class=1)\n",
+    "\n",
+    "X_train, X_test, y_train, y_test = train_test_split(X, y)\n",
+    "print(X_train.shape)\n",
+    "print(y_train.shape)\n",
+    "print(np.unique(y))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "3. Définissez la nouvelle fonction de perte. Nous allons utiliser la fonction *cross_entropy* vue en cours :\n",
+    "\n",
+    "$$\n",
+    "\\cal L = -\\frac 1 n \\sum_{i=1} y_i\\times \\log\\left(\\hat{y}_i\\right) \n",
+    "$$"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 70,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "4. Ecrivez les expressions mathématiques de ce que calcule votre neurone."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "5. Calculez le gradient de $\\cal L$ et écrivez la fonction correspondante"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 71,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "6. Adaptez une fonction <code>train(x, y, nu, epochs)</code> pour réaliser une déscente du gradient de la fonction $\\cal L$ afin de trouver les paramètres $w$ et $b$ minimisant la valeur de $\\cal L$. "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 72,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "7. Exécutez la cellule suivante pour que vos calculs matriciels puissent se faire et entraînez votre neurone."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "X_train = np.reshape(X_train, (X_train.shape[1], X_train.shape[0]))\n",
+    "print(X_train.shape)\n",
+    "print(y_train.shape)\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "8. Evaluez votre modèle. Pour cela : "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "8.1. Exécutez la cellule suivante pour formater les données de test."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 75,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "X_test = np.reshape(X_test, (X_test.shape[1], X_test.shape[0]))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "8.2. Appliquez votre neurone aux données de test et observez le résultat obtenu."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "8.3. Transformez les sorties en 0 et 1 : "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "8.4. Evaluez la qualité du modèle obtenu "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.7.4"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}
