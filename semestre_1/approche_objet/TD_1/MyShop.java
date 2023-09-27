@@ -13,7 +13,7 @@ public class MyShop {
         stocks.add(stock);
     }
 
-    public boolean IsEmpty() {
+    public boolean isEmpty() {
         Iterator<Stock> iterator = stocks.iterator();
         return !iterator.hasNext();
     }
@@ -29,9 +29,9 @@ public class MyShop {
         return null;
         }
 
-    public List<Stock> getListStock() {
+    /*public List<Stock> getListStock() {
         return stocks;
-    }
+    }*/
 
     public static boolean hasStock(String name) {
         Iterator<Stock> iterator = stocks.iterator();

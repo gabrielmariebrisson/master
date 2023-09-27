@@ -33,14 +33,17 @@ public class MyAppli {
                     if (input.equals("ajouter produit")){ 
                         System.out.print("entrez le nom du produit: ");
                         String nameProduct = scanner.nextLine();
+
+                        System.out.print("entrez le type du produit: ");
+                        String typeProduct = scanner.nextLine();
                         
                         while (!nameProduct.equals("stop")) {
-                            addProduct(scanner, stock, nameProduct);
+                            addProduct(scanner, stock, nameProduct,typeProduct);
                             System.out.print("Ajouter un nouveau produit ou tapez 'stop' pour arrêter : ");
                             nameProduct = scanner.next();
                         }
                     //afficher ou modifier
-                    }else if ((input.equals("afficher produit") || input.equals("modifier quantité produit")) && !shop.IsEmpty()) {
+                    }else if ((input.equals("afficher produit") || input.equals("modifier quantité produit")) && !shop.isEmpty()) {
                         System.out.print("Entrez le nom du produit : ");
                         String name = scanner.nextLine();
                         Product product = stock.getProduct(name);
@@ -56,7 +59,7 @@ public class MyAppli {
                         }
                     }
                 }
-                else if (shop.IsEmpty()) {
+                else if (shop.isEmpty()) {
                     System.out.println("Stock inexistant, 'ajouter stock'");
                 }
             }catch (Exception e) {
@@ -91,7 +94,7 @@ public class MyAppli {
         }
     } 
 
-    public static void addProduct(Scanner scanner, Stock stock,String name){
+    public static void addProduct(Scanner scanner, Stock stock,String name, tring typeProduct){
         if(stock==null){
             System.out.println ("Impossible le stock n'existe pas ");
             return ;

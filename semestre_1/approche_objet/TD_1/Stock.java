@@ -36,7 +36,7 @@ public class Stock {
         products.add(product);
     }
 
-    public static boolean nameExist(String name) {
+    public boolean nameExist(String name) {
         Iterator<Product> iterator = products.iterator();
         while(iterator.hasNext()){
             if (name.equals(iterator.next().getName())){
