@@ -1,0 +1,63 @@
+      Classe Voyage : Représente un voyage avec ou sans service.
+        Attributs :
+            -typeVoyage: String (avec ou sans service)
+            destination: String
+            dateDepart: Date
+            classe: String (première classe ou classe économique)
+        Méthodes :
+            calculerPrix(): double
+
+    Classe Client : Représente un client de l'agence de voyage.
+        Attributs :
+            nom: String
+            email: String
+        Méthodes :
+            effectuerReservation(voyage: Voyage, service: Service): Réservation
+
+    Classe Réservation : Représente une réservation de voyage.
+        Attributs :
+            client: Client
+            voyage: Voyage
+            service: Service
+        Méthodes :
+            calculerPrixTotal(): double
+
+    Classe Destination : Représente une destination proposée par l'agence de voyage.
+        Attributs :
+            nom: String
+            villeDepart: String
+        Méthodes :
+            obtenirTransits(): List<Destination>
+
+    Classe Ticket : Représente un ticket d'avion avec des réductions potentielles.
+        Attributs :
+            prixNormal: double
+            réduction: double
+        Méthodes :
+            calculerPrix(): double
+
+    Classe Service : Représente un service proposé par l'agence de voyage.
+        Attributs :
+            typeService: String (simple ou haute gamme)
+        Méthodes :
+            calculerPrix(): double
+
+    Classe Hôtel : Représente un hôtel avec des prestations standards ou luxueuses.
+        Attributs :
+            nom: String
+            prixStandard: double
+            prixLuxueux: double
+
+    Classe LocationVoiture : Représente la location d'une voiture.
+        Attributs :
+            prix: double
+
+    Classe DateVoyage : Représente une date possible pour un voyage.
+        Attributs :
+            date: Date
+
+    Classe Transit : Représente un transit possible entre deux destinations.
+        Attributs :
+            destinationOrigine: Destination
+            destinationDestination: Destination
+
