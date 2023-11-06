@@ -18,6 +18,6 @@ return super.getName() + " avec noisettes";
 
     @Override
     public int getPrice() {
-        return super.getPrice() + 1; // Coût supplémentaire pour les Vanille
+        return super.getPrice() + 1; 
     }
 }

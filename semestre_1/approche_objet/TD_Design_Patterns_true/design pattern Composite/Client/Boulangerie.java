@@ -1,25 +1,23 @@
-package design pattern Composite.Client;
+package Client;
 
-public class Boulangerie {
-    public static void main(String[] args) {
-        // Crée une tarte simple
-        Patisserie tarte = new Tarte();
-        System.out.println("Tarte simple : " + tarte.getName() + ", Prix : " + tarte.getPrice());
+import Leaf.Chantilly;
+import Component.Patisserie;
 
-        // Décore la tarte avec des Noisettes
-        Patisserie tarteAvecNoisettes = new Noisettes(tarte);
-        System.out.println("Tarte avec Noisettes : " + tarteAvecNoisettes.getName() + ", Prix : " + tarteAvecNoisettes.getPrice());
 
-        // Décore la tarte avec des Pommes
-        Patisserie tarteAvecPommes = new Pommes(tarte);
-        System.out.println("Tarte avec Pommes : " + tarteAvecPommes.getName() + ", Prix : " + tarteAvecPommes.getPrice());
+import Composite.Tarte;
 
-        // Décore la tarte avec de la Vanille
-        Patisserie tarteAvecVanille = new Vanille(tarte);
-        System.out.println("Tarte avec Vanille : " + tarteAvecVanille.getName() + ", Prix : " + tarteAvecVanille.getPrice());
+//import Composite.Tarte;
+public class Boulangerie {public static void main(String[] args) {
+    Patisserie chantilly = new Chantilly();
 
-        // Décore la tarte avec des Noisettes, des Pommes et de la Vanille
-        Patisserie tarteDecoree = new Noisettes(new Pommes(new Vanille(tarte)));
-        System.out.println("Tarte décorée : " + tarteDecoree.getName() + ", Prix : " + tarteDecoree.getPrice());
-    }
+    Tarte tarte = new Tarte("Pommes");
+
+    System.out.println("Nom du gâteau : " + tarte.getName());
+    System.out.println("Prix du gâteau : " + tarte.getPrice());
+
+    tarte.addFils(chantilly);
+
+    System.out.println("Nom du gâteau : " + tarte.getName());
+    System.out.println("Prix du gâteau : " + tarte.getPrice());
+}
 }

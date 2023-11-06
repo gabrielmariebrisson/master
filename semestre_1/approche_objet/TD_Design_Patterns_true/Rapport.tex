@@ -1,0 +1,58 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+
+\title{approcheObjet}
+\author{Gabriel Marie brisson}
+\date{October 2023}
+
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+L'objectif de ce TD est d'appréhender les différences entre les Design Patterns. J'ai pu découvrir la modularité, la flexibilité et la maintenabilité que les Design Patterns peuvent m'apporter. Pour lancer le code, il faut choisir soit le sous-répertoire "design pattern Composite" ou "design pattern Decorator", puis lancer la commande en précisant le chemin jusqu'au main. Dans "design pattern Composite":
+\begin{itemize}
+\item "javac Builder/BuilderExample.java"
+\item "javac DesignPatternObserver/Apply.java"
+\item "javac Factory/Application.java"
+\end{itemize}
+
+Dans "design pattern Decorator":
+\begin{itemize}
+\item "javac Boulangerie.java"
+\end{itemize}
+
+\section{Design Patterns Utilisés}
+
+\subsection{Decorator Pattern}
+
+
+J'ai mis en œuvre le pattern Decorator. Comme les poupées russes, on emboîte les objets. Ceci est pratique pour vérifier l'emboîtement des ajouts.
+
+\subsection{Composite Pattern}
+
+Dans l'autre implémentation, j'ai dû coder le Design Pattern Composite pour améliorer la gestion des recettes. C'est comme des patchs que l'on rajoute à notre objet. La vérification de la cohérence des patchs est plus difficile à mettre en place, mais la création de l'objet est plus simple, ainsi que la gestion des ingrédients.
+
+\subsection{Builder Pattern}
+
+J'ai également utilisé le Design Pattern Builder pour la fabrication des gâteaux. L'intégration du Builder Pattern permet de créer des objets prédéfinis sans se soucier de leur implémentation. Ceci permet d'éviter de se prendre la tête. Cependant, je me rends compte qu'il aurait été préférable que je le rajoute à Decorator au lieu de Composite, car Decorator est plus complexe à créer. Les caractéristiques sont les suivantes :
+\begin{itemize}
+\item Interface pour la création d'objets.
+\item La création d'objets en étapes, avec un contrôle précis sur chaque étape.
+\end{itemize}
+
+\subsection{Factory Pattern}
+
+Dans une autre approche, j'ai implémenté une version utilisant le Design Pattern Factory pour créer nos différentes recettes de gâteaux. Les caractéristiques sont les suivantes :
+\begin{itemize}
+\item Délègue la création d'objets aux sous-classes ou à des méthodes.
+\item Gestion des dépendances en évitant de créer directement des objets.
+\end{itemize}
+
+\subsection{Observer Pattern}
+
+Pour la gestion de la boulangerie et la vente des gâteaux, nous avons mis en place le Design Pattern Observer. J'ai créé un objet de type Vendeur pour déclencher la fabrication de certains types de gâteaux lorsque le stock est inférieur à un seuil prédéfini.
+
+\end{document}

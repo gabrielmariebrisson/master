@@ -1,18 +1,29 @@
 package Composite;
 
-import Component.Gateau;
+import java.util.ArrayList;
+import java.util.List;
 
-public class CompositeGateau implements Gateau {
-    private List<Gateau> gateaux = new ArrayList<>();
-    
-    @Override
-    void addFils(Gateau gateau){
+import Component.Patisserie;
+
+public abstract class CompositeGateau implements Patisserie {
+    protected List<Patisserie> gateaux = new ArrayList<>();
+    public CompositeGateau() {
+    }
+    public
+    void addFils(Patisserie gateau){
         gateaux.add(gateau);
     }
-    @Override
-    void removeFils(Gateau gateau){
+    public
+    void removeFils(Patisserie gateau){
         gateaux.remove(gateau);
     }
+
     @Override
-    public void print();
+    public  int getPrice() {
+        int price = 0;
+        for (Patisserie gateau : gateaux) {
+            price=price+gateau.getPrice();
+        }
+        return price;
+    }
 }
