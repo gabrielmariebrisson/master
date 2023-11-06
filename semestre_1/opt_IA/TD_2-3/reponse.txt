@@ -1,0 +1,8 @@
+1 Exploration d’arbres... sur feuilles
+
+1. Le facteur de branchement est de maximum 3
+non, le jeu peut se terminer
+
+
+2. Pour ami ca serait 8; 
+ Il y a qu'un seul fils, donc on lui force a faire ce coup, c'est mauvais signe 

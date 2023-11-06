@@ -21,6 +21,16 @@ def deroulementRandom(b):
     deroulementRandom(b)
     b.pop()
 
+
+def explorerTout(b):
+    if b.is_game_over():
+        return
+    for m in b.generate_legal_moves():
+        b.push(m)
+        explorerTout(m)
+        b.pop()
+
+def explorerHoir
 board = chess.Board()
 deroulementRandom(board)
 

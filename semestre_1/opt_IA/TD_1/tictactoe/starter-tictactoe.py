@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 ''' la valeur MiniMax de l’arbre est 10  '''
+#vnc kyoshi-008:0
 import time
 import Tictactoe 
 from random import randint,choice
@@ -106,35 +107,95 @@ def maxMinAvecCoupe(b):
     return pire
 #print(gagnantAmi(board)) 
 
+
+def minMaxAvecCoupeEtCompterParties(b):
+    if b.is_game_over():
+        return getresult(b),1
+    pire =2
+    nb=1
+    for m in b.legal_moves():
+        b.push(m)
+        pire, nb  = min (pire, maxMinAvecCoupe(b))
+        b.pop()
+        if pire ==-1:
+            return -1,nb
+    return pire,nb
+
+def maxMinAvecCoupeEtCompterParties(b):
+    if b.is_game_over():
+        return getresult(b),1
+    pire =2
+    nb=1
+    for m in b.legal_moves():
+        b.push(m)
+        pire = min (pire, minmaxAvecCoupe(b))
+        b.pop()
+        if pire == 1:
+            return 1,nb
+    return pire,nb
+
+def minMaxAvecCoupeEtCompterNoeuds(b):
+    if b.is_game_over():
+        return getresult(b),1
+    pire =2
+    nb=1
+    for m in b.legal_moves():
+        b.push(m)
+        nb+=1
+        pire, nb  = min (pire, maxMinAvecCoupe(b))
+        b.pop()
+        if pire ==-1:
+            return -1,nb
+    return pire,nb
+
+def maxMinAvecCoupeEtCompterNoeuds(b):
+    if b.is_game_over():
+        return getresult(b),1
+    pire =2
+    nb=1
+    for m in b.legal_moves():
+        b.push(m)
+        pire = min (pire, minmaxAvecCoupe(b))
+        nb+=1
+        b.pop()
+        if pire == 1:
+            return 1,nb
+    return pire,nb
 board = Tictactoe.Board()
 print(board)
 
 ### Deroulement d'une partie aléatoire
 deroulementRandom(board)
 
-start_time = time.time()
-gagnant, perdant, egalité, noeud, partie = exploreToutInfo(board, 0, 0, 0, 0, 0)
-end_time = time.time()
+res,nb= maxMinAvecCoupeEtCompterNoeuds(board)
+print(f'Y a-t-il une statégie gagnante ? {"oui" if res==1 else "non" }, Nombre de noeuds (avec coupe): {nb}')
 
-print('nombre de noeuds :', noeud)
-print('nombre de parties :', partie)
-print('nombre de gagnants :', gagnant)
-print('nombre de perdants :', perdant)
-print('nombre de egalité :', egalité)
+_,_,_,n,_= exploreToutInfo(board,0,0,0,0,0)
+print(f'Sans coupe, le nombre de noeuds explorés est de : {n}')
 
-print("Temps d'execution : ", end_time - start_time)
+# start_time = time.time()
+# gagnant, perdant, egalité, noeud, partie = exploreToutInfo(board, 0, 0, 0, 0, 0)
+# end_time = time.time()
 
-start_time = time.time()
-print("Y a-t-il une stratégie gagnante avec coupe ?", "oui" if maxMinAvecCoupe(board)==1 else "non")
-end_time = time.time()
-print("Temps d'execution : ", end_time - start_time)
+# print('nombre de noeuds :', noeud)
+# print('nombre de parties :', partie)
+# print('nombre de gagnants :', gagnant)
+# print('nombre de perdants :', perdant)
+# print('nombre de egalité :', egalité)
 
-start_time = time.time()
-print("Y a-t-il une stratégie gagnante sans coupe ?", "oui" if maxMin(board)==1 else "non")
-end_time = time.time()
-print("Temps d'execution : ", end_time - start_time)
+# print("Temps d'execution : ", end_time - start_time)
+
+# start_time = time.time()
+# print("Y a-t-il une stratégie gagnante avec coupe ?", "oui" if maxMinAvecCoupe(board)==1 else "non")
+# end_time = time.time()
+# print("Temps d'execution : ", end_time - start_time)
+
+# start_time = time.time()
+# print("Y a-t-il une stratégie gagnante sans coupe ?", "oui" if maxMin(board)==1 else "non")
+# end_time = time.time()
+# print("Temps d'execution : ", end_time - start_time)
 
 
-print("Apres le match, chaque coup est défait (grâce aux pop()): on retrouve le plateau de départ :")
-print(board)
+# print("Apres le match, chaque coup est défait (grâce aux pop()): on retrouve le plateau de départ :")
+# print(board)
 
