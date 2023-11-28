@@ -29,8 +29,7 @@ def explorerTout(b):
         b.push(m)
         explorerTout(m)
         b.pop()
-
-def explorerHoir
+        
 board = chess.Board()
 deroulementRandom(board)
 
