@@ -75,12 +75,12 @@ def minmax(b):
 def maxMin(b):
     if b.is_game_over():
         return getresult(b)
-    pire = -2
+    meilleur = -2
     for m in b.legal_moves():
         b.push(m)
-        pire = max (pire, minmax(b))
+        meilleur = max (pire, minmax(b))
         b.pop()
-    return pire
+    return meilleur
 
 def minmaxAvecCoupe(b):
     if b.is_game_over():
@@ -97,14 +97,14 @@ def minmaxAvecCoupe(b):
 def maxMinAvecCoupe(b):
     if b.is_game_over():
         return getresult(b)
-    pire =2
+    meilleur =2
     for m in b.legal_moves():
         b.push(m)
-        pire = min (pire, minmaxAvecCoupe(b))
+        meilleur = min (meilleur, minmaxAvecCoupe(b))
         b.pop()
-        if pire == 1:
+        if meilleur == 1:
             return 1
-    return pire
+    return meilleur
 #print(gagnantAmi(board)) 
 
 
