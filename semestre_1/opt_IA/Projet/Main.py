@@ -21,11 +21,18 @@ def print_program_IA():
     print("""
     Choose the method of search algorithms
     """)
-    print("0: minmax lent")
     print("1: alphabeta normal")
     print("2: alphabeta opti rapide")
     x = int(input("Choose : "))
-    return depth,x
+
+    print("""
+    Wish heuristique do you want
+    """)
+    print("0: basical")
+    print("1: Qlearning grid")
+    print("2: Neighboor and position grid")
+    heursitique = int(input("Choose : "))
+    return depth,x,heursitique
 
 
 def print_winner(board): 
@@ -53,7 +60,7 @@ def humain_move(board):
 
 def main_ai_humain():
     board = Board(boardsize=10)
-    depth,methode= print_program_IA()
+    depth,methode,heursitique= print_program_IA()
     print("0: Humain")
     print("1: IA")
     inputCouleur = int(input("Who starts first? : "))
@@ -65,15 +72,17 @@ def main_ai_humain():
         case _:
             couleur = Board._BLACK
 
-    ai = ReversiAI(player=couleur, depth=depth)
+    board._nextPlayer=couleur
+    ai = ReversiAI(player=couleur, depth=depth,Qlearning=heursitique)
 
     while not board.is_game_over():
         print_board(board)
-        if board._nextPlayer == ai.player:
+        if board._nextPlayer != ai.player:
             print("AI's turn:")
             move = ai.get_move(board,methode)
         else:
             print("Your turn:")
+            print("Your are :",)
             move = humain_move(board)
 
         board.push(move)
@@ -82,10 +91,10 @@ def main_ai_humain():
 
 def main_ai_ai():
     board = Board(boardsize=10)
-    depth_1,methode_1= print_program_IA()
-    ai_1 = ReversiAI(player=Board._WHITE, depth=depth_1)
-    depth_2,methode_2= print_program_IA()
-    ai_2 = ReversiAI(player=Board._BLACK, depth=depth_2)
+    depth_1,methode_1,heuristique_1= print_program_IA()
+    ai_1 = ReversiAI(player=Board._WHITE, depth=depth_1,Qlearning=heuristique_1)
+    depth_2,methode_2, heuristique_2= print_program_IA()
+    ai_2 = ReversiAI(player=Board._BLACK, depth=depth_2,Qlearning=heuristique_2)
 
     while not board.is_game_over():
         print_board(board)
