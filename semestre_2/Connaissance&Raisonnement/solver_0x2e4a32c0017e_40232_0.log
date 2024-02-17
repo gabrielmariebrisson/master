@@ -1,0 +1,63 @@
+
+[93mACE v2.1 [0m
+
+  [94minstance[0m
+    name:ipykernel_launcher
+
+  Loading variables...
+
+  Loading constraints...
+
+  [94mdomains[0m
+    types:1  values:120  sizes:[10:12]
+  [94mvariables[0m
+    count:12  arrays:0  degrees:[2:7,3:3,4:2]
+  [94mconstraints[0m
+    count:8  specific:4  arities:[1:2,2:1,4:1,5:3,8:1]
+    distribution:[AllDifferentComplete:1,ConstraintIntension:4,Extension1:2,Sub2EQ:1]
+    intStructures:(2,shared:2)
+    wck:0.34  cpu:1.007  mem:9M134
+
+  Building solver... 
+
+  [94msolver[0m
+    guaranteedAC:true
+    wck:0.39  cpu:1.045  mem:10M734
+
+  [94mpreprocessing[0m
+    effs:19  revisions:(61,useless=46)  values:44  removedByAC:76  unsat:false
+    wck:0.036  cpu:1.076  mem:10M734
+
+    run0  dpts:0..11  effs:45  fails:3  wrgs:3  wck:0.00  sols:1
+
+  [94mglobal[0m
+    effs:45  revisions:(159,useless=104)
+    stop:REACHED_GOAL  wrgs:3  sols:1  sol1Cpu:1.082
+    wck:0.45  cpu:1.091  mem:11M232
+
+
+  Solution 1 in JSON format:
+   {
+    s: 9,
+    e: 5,
+    n: 6,
+    d: 7,
+    m: 1,
+    o: 0,
+    r: 8,
+    y: 2,
+    c1: 1,
+    c2: 1,
+    c3: 0,
+    c4: 1
+   }
+
+[92ms SATISFIABLE[0m
+[92m
+v[0m <instantiation id='sol1' type='solution'> <list> s e n d m o r y c1 c2 c3 c4 </list> <values> 9 5 6 7 1 0 8 2 1 1 0 1 </values> </instantiation>
+[92m
+d WRONG DECISIONS[0m 3
+[92md FOUND SOLUTIONS[0m 1
+[91md INCOMPLETE EXPLORATION[0m
+
+c real time : 1.102

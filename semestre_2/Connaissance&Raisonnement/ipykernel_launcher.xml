@@ -1,0 +1,26 @@
+<instance format="XCSP3" type="CSP">
+  <variables>
+    <var id="s"> 0..9 </var>
+    <var id="e"> 0..9 </var>
+    <var id="n"> 0..9 </var>
+    <var id="d"> 0..9 </var>
+    <var id="m"> 0..9 </var>
+    <var id="o"> 0..9 </var>
+    <var id="r"> 0..9 </var>
+    <var id="y"> 0..9 </var>
+    <var id="c1"> 0..9 </var>
+    <var id="c2"> 0..9 </var>
+    <var id="c3"> 0..9 </var>
+    <var id="c4"> 0..9 </var>
+  </variables>
+  <constraints>
+    <allDifferent> s e n d m o r y </allDifferent>
+    <intension> eq(add(y,mul(c1,10)),add(d,e)) </intension>
+    <intension> eq(add(e,mul(c2,10)),add(c1,n,r)) </intension>
+    <intension> eq(add(n,mul(c3,10)),add(c2,e,o)) </intension>
+    <intension> eq(add(o,mul(c4,10)),add(c3,s,m)) </intension>
+    <intension> eq(c4,m) </intension>
+    <intension> gt(s,0) </intension>
+    <intension> gt(m,0) </intension>
+  </constraints>
+</instance>
