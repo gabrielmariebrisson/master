@@ -136,6 +136,6 @@ class SolveWumpus(): # Your class must inherit from it
             steps += 1
 
 wumpus = WumpusWorld()
-wumpus._printSolution()
-print(wumpus)
-SolveWumpus().solve()
+#wumpus._printSolution()
+#print(wumpus)
+#SolveWumpus().solve()
