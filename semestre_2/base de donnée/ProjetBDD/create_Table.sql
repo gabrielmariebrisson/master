@@ -12,7 +12,7 @@ CREATE TABLE Commune (
 
 CREATE TABLE Statistique (
     id_statistique SERIAL PRIMARY KEY,
-    valeur FLOAT NOT NULL,
+    valeur FLOAT ,
     date_debut DATE NULL,
     date_fin DATE NULL,
     id_libelle VARCHAR(255) NOT NULL,

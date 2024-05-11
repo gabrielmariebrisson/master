@@ -5,6 +5,7 @@ conn = Fonction.connect_to_database()
 
 path_to_csv_directory = 'Mariage'
 try:
+
     # Ajout des données pour le mariage
     for filename in os.listdir(path_to_csv_directory):
         if filename.endswith('.csv'):

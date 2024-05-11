@@ -196,25 +196,19 @@ def createDate(date):
 def create_df_statitistique(conn, commune, df, libelle):
     new_df = pd.DataFrame(columns=['valeur', 'date_debut', 'date_fin', 'id_libelle', 'id_com'])
 
-    try:
-        for index_row, row in df.iterrows():
-            for index_column in range(len(row)):
-                value = row.iloc[index_column]
-                date_text = re.sub(r'[a-zA-Zéàêèôâîï\-_]', '', df.columns[index_column])
-                date_debut, date_fin = createDate(date_text)
-
-                new_row = pd.Series({
-                    'valeur': value,
-                    'date_debut': date_debut,
-                    'date_fin': date_fin,
-                    'id_libelle': libelle,
-                    'id_com': commune.iloc[index_row, 0]
-                })
-                
-                new_df = pd.concat([new_df, pd.DataFrame([new_row])], ignore_index=True)
-        print("Data prepared successfully.")
-    except Exception as e:
-        print(f"An error occurred while creating the DataFrame: {e}")
+    for column in df.columns:
+            date_text = re.sub(r'[a-zA-Zéàêèôâîï\-_]', '', column)
+            date_debut, date_fin = createDate(date_text)
+            news_columns = pd.DataFrame({
+                'valeur': df[column].values,
+                'date_debut': date_debut,
+                'date_fin': date_fin,
+                'id_libelle': libelle,
+                'id_com': commune.iloc[:,0]
+            })
+            
+            new_df = pd.concat([new_df, news_columns], ignore_index=True)
+    print("Data prepared successfully.")
 
     return new_df
 
@@ -226,7 +220,6 @@ def addALLColonnes(conn, csv_file):
     df = df.iloc[:, 1:]
 
     tableau_ajout = recuperer_indice(df)
-    
     print("Ajout de chaque premiere labelle pour tester")
     for key, value in tableau_ajout:
         print("labelle :", key)
@@ -235,7 +228,7 @@ def addALLColonnes(conn, csv_file):
 
     print("Ajout du reste des colonnes")
     for key, value in tableau_ajout:
-        if value[1:]:
+        if value[1:] and (key=='RSECOCC' or key=='LOGVAC' or key=='PMEN'):
             print("labelle :", key)
             new_df = create_df_statitistique(conn, commune, df.iloc[:, value[1:]], key)
             copy_from_stringio(conn, new_df, 'statistique', ('valeur', 'date_debut', 'date_fin', 'id_libelle', 'id_com'))
