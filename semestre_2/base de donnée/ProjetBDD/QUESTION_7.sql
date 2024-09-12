@@ -13,7 +13,7 @@ WHERE s.id_libelle = 'POP'
 
 CREATE INDEX idx_population ON statistique (valeur);
 
-
+EXPLAIN
 SELECT c.nom_ville
 FROM commune c
 JOIN statistique s ON c.id_com = s.id_com
