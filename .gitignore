@@ -1,0 +1,34 @@
+*.keras
+*.gz
+*.pt
+./semestre_3/Deep Learning in Computer Vision/MexCulture142/*
+*.zip
+
+# Ignorer les fichiers compilés comme .class ou .o
+*.class
+*.o
+
+# Ignorer les fichiers temporaires des IDEs
+.vscode/
+.idea/
+*.swp
+
+# Ignorer les logs
+*.log
+
+# Ignorer les fichiers de configuration utilisateur
+*.env
+config.local.php
+
+# Ignorer les fichiers de builds ou de dépendances
+node_modules/
+dist/
+vendor/
+
+# Ignorer les fichiers système
+.DS_Store
+Thumbs.db
+
+# Si tu veux exclure un fichier particulier de l'ignore, tu peux le spécifier explicitement
+!important-file.csv
+
