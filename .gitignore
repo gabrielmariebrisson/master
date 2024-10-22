@@ -3,6 +3,8 @@
 *.pt
 ./semestre_3/Deep Learning in Computer Vision/MexCulture142/*
 *.zip
+.ipynb_checkpoints
+
 
 # Ignorer les fichiers compilés comme .class ou .o
 *.class
